@@ -6,10 +6,11 @@ interface Props {
 }
 
 export const UserInput: React.FC<Props> = ({ chatHistory, setChatHistory }) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const input = e.currentTarget.elements.chatInput as HTMLInputElement;
-    setChatHistory(processInput(input.value, chatHistory));
+    const newHistory = await processInput(input.value, chatHistory);
+    setChatHistory(newHistory);
     input.value = "";
   };
 
