@@ -15,11 +15,14 @@ export const History: React.FC<Props> = ({ chatHistory }) => {
         width: "100%",
         display: "flex",
         flexDirection: "column-reverse",
+        overflowY: "scroll",
       }}
     >
-      {chatHistory.map((line, i) => (
-        <div key={i}>{line}</div>
-      ))}
+      <div>
+        {chatHistory.map((line, i) => (
+          <div key={i}>{line}</div>
+        ))}
+      </div>
     </div>
   );
 };

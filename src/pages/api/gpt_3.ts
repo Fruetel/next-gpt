@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { Configuration, OpenAIApi } from "openai";
 
 type Data = {
-  answer: string;
+  data: { answer: string };
 };
 
 const configuration = new Configuration({
@@ -21,6 +21,8 @@ export default async function handler(
     prompt: req.body.data.prompt,
     max_tokens: 50,
     top_p: 0.5,
+    frequency_penalty: 0.3,
+    presence_penalty: 0.2,
   });
 
   const answer = response.data.choices[0].text;
@@ -28,6 +30,6 @@ export default async function handler(
   if (!answer) {
     res.status(500);
   } else {
-    res.status(200).json({ answer });
+    res.status(200).json({ data: { answer: answer } });
   }
 }

@@ -1,3 +1,4 @@
+import bot from "../../bots/default";
 import { processInput } from "../../inputHandler";
 
 interface Props {
@@ -9,7 +10,7 @@ export const UserInput: React.FC<Props> = ({ chatHistory, setChatHistory }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const input = e.currentTarget.elements.chatInput as HTMLInputElement;
-    const newHistory = await processInput(input.value, chatHistory);
+    const newHistory = await processInput(bot, input.value, chatHistory);
     setChatHistory(newHistory);
     input.value = "";
   };

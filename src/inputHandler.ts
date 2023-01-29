@@ -1,31 +1,59 @@
 const userReference = "You";
-const botReference = "Bot";
 
-const generateResponse = async (input: string, history: string[]) => {
+export type Botspec = {
+  reference: string;
+  description: string;
+  personality: string;
+};
+
+const generateResponse = async (
+  bot: Botspec,
+  input: string,
+  history: string[]
+) => {
+  const historyLength = history.length;
+
+  const prompt =
+    historyLength > 6
+      ? `${bot.description}\n\n` +
+        "The converation so far:\n" +
+        history.slice(0, -2).join("\n") +
+        "\n\n" +
+        bot.personality +
+        "\n\n" +
+        history.slice(-2).join("\n") +
+        `\n${userReference}: ${input}\n${bot.reference}:`
+      : `${bot.description}\n\n` +
+        history.join("\n") +
+        `\n${userReference}: ${input}\n${bot.reference}:`;
+
+  console.log(prompt);
+
   return fetch("/api/gpt_3", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      data: {
-        prompt:
-          history.join("\n") + `\n${userReference}: ${input}\n${botReference}:`,
-      },
+      data: { prompt },
     }),
   })
     .then((response) => response.json())
-    .then((data) => {
-      return data.answer;
+    .then((body) => {
+      return body.data.answer;
     })
     .catch((error) => console.error(error));
 };
 
-export const processInput = async (input: string, history: string[]) => {
-  const response = await generateResponse(input, history);
+export const processInput = async (
+  bot: Botspec,
+  input: string,
+  history: string[]
+) => {
+  const response = await generateResponse(bot, input, history);
   return [
-    `${botReference}: ${response}`,
-    `${userReference}: ${input}`,
     ...history,
+    `${userReference}: ${input}`,
+    `${bot.reference}: ${response}`,
   ];
 };
