@@ -13,9 +13,10 @@ export const History: React.FC<Props> = ({ chatHistory }) => {
         flex: 1,
         backgroundColor: "#cfcfcf",
         width: "100%",
+        height: "100vh",
         display: "flex",
         flexDirection: "column-reverse",
-        overflowY: "scroll",
+        overflow: "auto",
       }}
     >
       <div>

@@ -77,7 +77,6 @@ describe("processInput", () => {
 
     const expectedPrompt =
       "Bot description\n\nThe conversation so far:\nYou: Hi! I'm Tom.\nBot: Hello Tom! I'm Marvin.\nYou: How are you 1?\nBot: This is the bots reply\nYou: How are you 2?\nBot: This is the bots reply\n\nBot personality\n\nYou: How are you 3?\nBot: This is the bots reply\nYou: How are you 4?\nBot:";
-    console.log(expectedPrompt);
 
     expect(fetchMock).toHaveFetched("/api/gpt_3", {
       method: "POST",
