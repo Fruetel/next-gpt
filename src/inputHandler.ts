@@ -16,7 +16,7 @@ const generateResponse = async (
   const prompt =
     historyLength > 6
       ? `${bot.description}\n\n` +
-        "The converation so far:\n" +
+        "The conversation so far:\n" +
         history.slice(0, -2).join("\n") +
         "\n\n" +
         bot.personality +
@@ -26,8 +26,6 @@ const generateResponse = async (
       : `${bot.description}\n\n` +
         history.join("\n") +
         `\n${userReference}: ${input}\n${bot.reference}:`;
-
-  console.log(prompt);
 
   return fetch("/api/gpt_3", {
     method: "POST",
