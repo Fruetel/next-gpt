@@ -19,10 +19,10 @@ export default async function handler(
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: req.body.data.prompt,
-    max_tokens: 50,
+    max_tokens: 100,
     top_p: 0.5,
-    frequency_penalty: 0.3,
-    presence_penalty: 0.2,
+    frequency_penalty: 0.4,
+    presence_penalty: 0.3,
   });
 
   const answer = response.data.choices[0].text;
