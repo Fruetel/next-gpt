@@ -27,6 +27,8 @@ const generateResponse = async (
         history.join("\n") +
         `\n${userReference}: ${input}\n${bot.reference}:`;
 
+  console.log(prompt);
+
   return fetch("/api/gpt_3", {
     method: "POST",
     headers: {
@@ -43,12 +45,26 @@ const generateResponse = async (
     .catch((error) => console.error(error));
 };
 
+export const regenerateResponse = async (bot: Botspec, history: string[]) => {
+  const lastUserLine = history.at(-2) || "";
+  const lastUserInput = lastUserLine.slice(userReference.length + 2);
+
+  const response = await generateResponse(
+    bot,
+    lastUserInput,
+    history.slice(0, -2)
+  );
+
+  return [...history.slice(0, -1), `${bot.reference}: ${response}`];
+};
+
 export const processInput = async (
   bot: Botspec,
   input: string,
   history: string[]
 ) => {
   const response = await generateResponse(bot, input, history);
+
   return [
     ...history,
     `${userReference}: ${input}`,
