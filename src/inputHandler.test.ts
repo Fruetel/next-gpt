@@ -1,4 +1,4 @@
-import { processInput, type Botspec } from "./inputHandler";
+import { processInput, regenerateResponse, type Botspec } from "./inputHandler";
 import fetchMock from "fetch-mock-jest";
 
 describe("processInput", () => {
@@ -89,5 +89,55 @@ describe("processInput", () => {
         "Content-Type": "application/json",
       },
     });
+  });
+});
+
+describe("regenerateResponse", () => {
+  const history = [
+    "You: Hi! I'm Tom.",
+    "Bot: Hello Tom! I'm Marvin.",
+    "You: Nice to meet you.",
+    "Bot: So, what do you want?",
+  ];
+
+  const bot: Botspec = {
+    reference: "Bot",
+    description: "Bot description",
+    personality: "Bot personality",
+  };
+
+  beforeEach(() => {
+    fetchMock.post("/api/gpt_3", {
+      status: 200,
+      body: { data: { answer: "This is the bots reply" } },
+    });
+  });
+
+  afterEach(() => {
+    fetchMock.reset();
+  });
+
+  it("extends the history with the bots responses", async () => {
+    const result = await regenerateResponse(bot, history);
+
+    expect(fetchMock).toHaveFetched("/api/gpt_3", {
+      method: "POST",
+      body: {
+        data: {
+          prompt:
+            "Bot description\n\nYou: Hi! I'm Tom.\nBot: Hello Tom! I'm Marvin.\nYou: Nice to meet you.\nBot:",
+        },
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    expect(result).toEqual([
+      "You: Hi! I'm Tom.",
+      "Bot: Hello Tom! I'm Marvin.",
+      "You: Nice to meet you.",
+      "Bot: This is the bots reply",
+    ]);
   });
 });
