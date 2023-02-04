@@ -10,13 +10,15 @@ export const History: React.FC<Props> = ({ chatHistory }) => {
   return (
     <div
       style={{
-        flex: 1,
-        backgroundColor: "#cfcfcf",
+        flexGrow: 1,
         width: "100%",
-        height: "100vh",
+        backgroundColor: "#cfcfcf",
         display: "flex",
         flexDirection: "column-reverse",
         overflow: "auto",
+        padding: "5px",
+        fontFamily: "arial, helvetica, sans-serif",
+        fontSize: "14pt",
       }}
     >
       <div>

@@ -1,4 +1,4 @@
-import bot from "../../bots/default";
+import bot from "../../bots/ingrid";
 import { processInput } from "../../inputHandler";
 
 interface Props {
@@ -20,7 +20,13 @@ export const UserInput: React.FC<Props> = ({ chatHistory, setChatHistory }) => {
       <input
         type="text"
         name="chatInput"
-        style={{ width: "100%", padding: "10px", boxSizing: "border-box" }}
+        style={{
+          marginTop: "10px",
+          flexShrink: 0,
+          width: "100%",
+          padding: "10px",
+          boxSizing: "border-box",
+        }}
       />
     </form>
   );
